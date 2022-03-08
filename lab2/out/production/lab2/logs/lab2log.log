@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2022-03-07T01:57:04.647432500Z</date>
+  <millis>1646618224647</millis>
+  <nanos>432500</nanos>
+  <sequence>0</sequence>
+  <logger>Main</logger>
+  <level>INFO</level>
+  <class>Main</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>file reading start</message>
+</record>
+<record>
+  <date>2022-03-07T01:57:04.734437400Z</date>
+  <millis>1646618224734</millis>
+  <nanos>437400</nanos>
+  <sequence>1</sequence>
+  <logger>Main</logger>
+  <level>WARNING</level>
+  <class>Main</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>warning </message>
+</record>
+<record>
+  <date>2022-03-07T01:57:04.736437500Z</date>
+  <millis>1646618224736</millis>
+  <nanos>437500</nanos>
+  <sequence>2</sequence>
+  <logger>Main</logger>
+  <level>INFO</level>
+  <class>Main</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>reading was successful</message>
+</record>
+</log>
