@@ -1,11 +1,10 @@
-package resources;
+package OperationsAndFactory;
 
 
 import Exceptions.NoSuchOperationException;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 import java.util.Properties;
 
 

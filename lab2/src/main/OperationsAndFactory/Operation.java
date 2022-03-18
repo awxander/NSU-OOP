@@ -1,4 +1,4 @@
-package resources;
+package OperationsAndFactory;
 
 import Exceptions.WrongArgumentsAmountException;
 

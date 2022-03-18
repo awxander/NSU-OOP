@@ -2,39 +2,39 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2022-03-07T01:57:04.647432500Z</date>
-  <millis>1646618224647</millis>
-  <nanos>432500</nanos>
+  <date>2022-03-14T15:05:26.967452Z</date>
+  <millis>1647270326967</millis>
+  <nanos>452000</nanos>
   <sequence>0</sequence>
   <logger>Main</logger>
   <level>INFO</level>
   <class>Main</class>
   <method>main</method>
   <thread>1</thread>
-  <message>file reading start</message>
+  <message>start of reading </message>
 </record>
 <record>
-  <date>2022-03-07T01:57:04.734437400Z</date>
-  <millis>1646618224734</millis>
-  <nanos>437400</nanos>
+  <date>2022-03-14T15:05:27.171463700Z</date>
+  <millis>1647270327171</millis>
+  <nanos>463700</nanos>
   <sequence>1</sequence>
-  <logger>Main</logger>
-  <level>WARNING</level>
-  <class>Main</class>
-  <method>main</method>
+  <logger>Calculator</logger>
+  <level>INFO</level>
+  <class>Calculator</class>
+  <method>calculate</method>
   <thread>1</thread>
-  <message>warning </message>
+  <message>calculating was successful</message>
 </record>
 <record>
-  <date>2022-03-07T01:57:04.736437500Z</date>
-  <millis>1646618224736</millis>
-  <nanos>437500</nanos>
+  <date>2022-03-14T15:05:27.172463700Z</date>
+  <millis>1647270327172</millis>
+  <nanos>463700</nanos>
   <sequence>2</sequence>
   <logger>Main</logger>
   <level>INFO</level>
   <class>Main</class>
   <method>main</method>
   <thread>1</thread>
-  <message>reading was successful</message>
+  <message>end of reading </message>
 </record>
 </log>

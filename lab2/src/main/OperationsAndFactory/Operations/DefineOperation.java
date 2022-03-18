@@ -1,7 +1,7 @@
-package resources.Operations;
+package OperationsAndFactory.Operations;
 
 import Exceptions.WrongArgumentsAmountException;
-import resources.Operation;
+import OperationsAndFactory.Operation;
 
 import java.util.HashMap;
 import java.util.Stack;
