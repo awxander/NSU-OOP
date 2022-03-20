@@ -10,7 +10,7 @@ public class WordClass {
     private final HashMap<String, Integer> _words_map = new HashMap<>();
     private int _words_amount = 0;
 
-    private @NotNull String GetNextWord(@NotNull StringBuilder str) {
+    private @NotNull String getNextWord(@NotNull StringBuilder str) {
         StringBuilder res_str = new StringBuilder();
         while (str.length() > 0 && Character.isLetterOrDigit(str.charAt(0))) {
             res_str.append(str.charAt(0));
@@ -22,7 +22,7 @@ public class WordClass {
         return res_str.toString();
     }
 
-    private void PrintSortedDataList(BufferedWriter writer) {
+    private void printSortedDataList(BufferedWriter writer) {
         List<Map.Entry<String, Integer>> wordsData = new ArrayList<>();
         int i = 0;
         for (Map.Entry<String, Integer> entry : _words_map.entrySet()) {
@@ -52,14 +52,14 @@ public class WordClass {
 
     }
 
-    public void FillMap(@NotNull BufferedReader reader) {
+    public void fillMap(@NotNull BufferedReader reader) {
         try {
             String str = reader.readLine();
             while (str != null) //read one line, then cut words one by one from it
             {
                 StringBuilder str_copy = new StringBuilder(str);
                 while (str_copy.length() > 0) {
-                    String word = GetNextWord(str_copy);
+                    String word = getNextWord(str_copy);
                     if (word != null) {
                         _words_amount++;
                         if (!_words_map.containsKey(word)) {// add removed word to map
@@ -79,9 +79,9 @@ public class WordClass {
 
     }
 
-    public void PrintDataInCSV(BufferedReader reader, BufferedWriter writer) {
-        this.FillMap(reader);
-        this.PrintSortedDataList(writer);
+    public void printDataInCSV(BufferedReader reader, BufferedWriter writer) {
+        this.fillMap(reader);
+        this.printSortedDataList(writer);
 
     }
 
