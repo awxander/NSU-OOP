@@ -23,7 +23,8 @@ public class Main {
                 reader = new BufferedReader(new InputStreamReader(System.in));
             }
             log.info("start of reading ");
-            Calculator.calculate(reader);
+            Calculator calculator = new Calculator();
+            calculator.calculate(reader);
             log.info("end of reading ");
         } catch (IOException e) {
             log.warning("reading failed: " + e.getLocalizedMessage());

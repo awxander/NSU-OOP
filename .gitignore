@@ -2,3 +2,5 @@
 *.txt
 idea/
 *.class
+*.iml
+*.xml

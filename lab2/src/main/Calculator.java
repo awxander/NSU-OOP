@@ -15,11 +15,11 @@ import java.util.logging.Logger;
 public class Calculator {
 
     private static final Logger log = Logger.getLogger(Calculator.class.getName());
-    static HashMap<String, String> defineMap = new HashMap<>();
-    static Stack<Double> stack = new Stack<>();
+    private final HashMap<String, String> defineMap = new HashMap<>();
+    private final Stack<Double> stack = new Stack<>();
 
 
-    private static void checkDefinition(String[] args) {
+    private  void checkDefinition(String[] args) {
         for (int i = 0; i < args.length; i++) {
             String str = defineMap.get(args[i]);
             if (str != null) {
@@ -29,7 +29,7 @@ public class Calculator {
     }
 
 
-    public static void calculate(@NotNull BufferedReader reader) {
+    public void calculate(@NotNull BufferedReader reader) {
         String str;
         String[] res;
         try {
