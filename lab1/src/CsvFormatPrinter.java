@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
-public class WordClass {
+public class CsvFormatPrinter {
 
     public void printDataInCSV(BufferedReader reader, BufferedWriter writer) {
 
