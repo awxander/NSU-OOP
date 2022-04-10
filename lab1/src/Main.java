@@ -6,9 +6,18 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        try(BufferedReader reader  = new BufferedReader(new FileReader("input.txt"));
-            BufferedWriter writer = new BufferedWriter(new FileWriter("output.csv")))
-        {
+        String inputFileName, outputFileName;
+        if (args.length == 2) {
+            inputFileName = args[0];
+            outputFileName = args[1];
+        }else{
+            System.out.println("wrong arguments amount, using default setting:" +
+                    "\n"+ "input: input.txt" + "\n" + "output: output.csv");
+            inputFileName = "input.txt";
+            outputFileName = "output.csv";
+        }
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFileName));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName))) {
             CsvFormatPrinter csvPrinter = new CsvFormatPrinter();
             csvPrinter.printDataInCSV(reader, writer);
         } catch (IOException ex) {
