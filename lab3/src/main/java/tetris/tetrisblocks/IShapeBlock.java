@@ -18,4 +18,16 @@ public class IShapeBlock extends TetrisBlock {
             this.setY(getY() + 1);
         }
     }
+
+    @Override
+    public void unrotate(){
+        super.unrotate();
+        if(this.getWidth() == 1){
+            this.setX(getX()-1);
+            this.setY(getY() + 1);
+        }else{
+            this.setX(getX() + 1);
+            this.setY(getY() - 1);
+        }
+    }
 }

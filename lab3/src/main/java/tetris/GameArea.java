@@ -5,6 +5,7 @@ import tetris.tetrisblocks.JShapeBlock;
 import tetris.tetrisblocks.LShapeBlock;
 import tetris.tetrisblocks.OShapeBlock;
 import tetris.tetrisblocks.SShapeBlock;
+import tetris.tetrisblocks.TShapeBlock;
 import tetris.tetrisblocks.ZShapeBlock;
 
 import javax.swing.JPanel;
@@ -24,7 +25,7 @@ public class GameArea extends JPanel {
 
     public GameArea(JPanel placeholder, int columns) {
         blockTypes = new TetrisBlock[]{new IShapeBlock(), new IShapeBlock(), new LShapeBlock(), new JShapeBlock(),
-                new OShapeBlock(), new SShapeBlock(), new ZShapeBlock()};
+                new OShapeBlock(), new SShapeBlock(), new ZShapeBlock(), new TShapeBlock()};
         placeholder.setVisible(false);
         this.setBounds(placeholder.getBounds());
         this.setBorder(placeholder.getBorder());
@@ -134,12 +135,12 @@ public class GameArea extends JPanel {
         for (int row = 0; row < height; row++) {
             for (int column = 0; column < width; column++) {
                 if (shape[row][column] != 0) {
-                    int x = column + block.getX();
+                    int x = column + block.getX() - 1;
                     int y = row + block.getY();
 
                     if (y < 0) break;
 
-                    if (background[y][x] != null || background[y][x - 1] != null) return true;
+                    if (background[y][x] != null) return true;
 
                     break;
                 }
@@ -162,12 +163,12 @@ public class GameArea extends JPanel {
         for (int row = 0; row < height; row++) {
             for (int column = width - 1; column >= 0; column--) {
                 if (shape[row][column] != 0) {
-                    int x = column + block.getX();
+                    int x = column + block.getX() + 1;
                     int y = row + block.getY();
 
                     if (y < 0) break;//while block is spawned in the top
 
-                    if (background[y][x] != null || background[y][x + 1] != null) return true;
+                    if (background[y][x] != null) return true;
 
                     break;
                 }
@@ -211,37 +212,41 @@ public class GameArea extends JPanel {
         }
     }
 
-    public void unrotateBlock() {
-        for (int i = 0; i < 3; i++) block.rotate();
+
+    private boolean checkLayering(){
+        int[][] shape = block.getShape();
+        int width = block.getWidth();
+        int height = block.getHeight();
+        if(block.getLeftEdge() < 0 || block.getRightEdge() > gridColumns || block.getBottomEdge() > gridRows){
+            return false;
+        }
+
+        for (int row = 0; row < height; row++) {
+            for (int column = width - 1; column >= 0; column--) {
+                if (shape[row][column] != 0) {
+                    int x = column + block.getX();
+                    int y = row + block.getY();
+
+                    if (y < 0) break;//while block is spawned in the top
+
+                    if (background[y][x] != null) return false;
+
+                    break;
+                }
+            }
+        }
+        return true;
+
     }
 
     public void rotateBlock() {
         if (block == null) return;
+
         block.rotate();
-        if (block.getLeftEdge() < 0) {
-            block.setX(0);
+
+        if(!checkLayering()){//если есть наслоение
+            block.unrotate();
         }
-
-        if (block.getRightEdge() > gridColumns) {
-            block.setX(gridColumns - block.getWidth());
-        }
-
-        if (block.getBottomEdge() > gridRows) {
-            block.setY(gridRows - block.getHeight());
-        }
-
-        if(leftEdgeReached() && rightEdgeReached()){
-            unrotateBlock();
-        }else{
-            if(leftEdgeReached()){
-                block.setX(block.getX()+1);
-            }
-            if(rightEdgeReached()){
-                block.setX(getX() - 1);
-            }
-        }
-
-
         repaint();
     }
 

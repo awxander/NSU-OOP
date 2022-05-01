@@ -8,6 +8,9 @@ public class TetrisBlock {
     private int[][] shape;
     private Color color;
     private int x, y;
+    private int[][][] shapes;
+    private int currentRotation;
+    private Color[] availableColors = {Color.red, Color.blue,Color.green, Color.pink, Color.cyan};
 
     public void setX(int x) {
         this.x = x;
@@ -17,9 +20,6 @@ public class TetrisBlock {
         this.y = y;
     }
 
-    private int[][][] shapes;
-    private int currentRotation;
-    private Color[] availableColors = {Color.red, Color.blue,Color.green, Color.pink, Color.cyan};
 
     public int getX() {
         return x;
@@ -89,6 +89,14 @@ public class TetrisBlock {
         currentRotation++;
         if (currentRotation > 3) {
             currentRotation = 0;
+        }
+        shape = shapes[currentRotation];
+    }
+
+    public void unrotate(){
+        currentRotation--;
+        if(currentRotation < 0){
+            currentRotation = 3;
         }
         shape = shapes[currentRotation];
     }
