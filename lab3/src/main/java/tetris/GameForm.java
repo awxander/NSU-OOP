@@ -11,6 +11,7 @@ public class GameForm extends JFrame {
     private JLabel scoreLabel;
     private JLabel levelLabel;
     private final GameArea gameArea;
+    private GameThread gameThread;
 
 
     private void initControls() {
@@ -21,6 +22,7 @@ public class GameForm extends JFrame {
         inputMap.put(KeyStroke.getKeyStroke("LEFT"), "left");
         inputMap.put(KeyStroke.getKeyStroke("DOWN"), "down");
         inputMap.put(KeyStroke.getKeyStroke("UP"), "up");
+        inputMap.put(KeyStroke.getKeyStroke("ESCAPE"), "esc");
 
         actionMap.put("right", new AbstractAction() {
             @Override
@@ -46,10 +48,24 @@ public class GameForm extends JFrame {
                 gameArea.rotateBlock();
             }
         });
+        actionMap.put("esc", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                gameThread.interrupt();
+                Main.showStartupForm();
+            }
+        });
     }
 
     public void startGame() {
-        new GameThread(gameArea, this).start();
+        gameArea.initBackGroundArray();
+        gameThread = new GameThread(gameArea, this);
+        gameThread.start();
+    }
+
+    public void endGame(){
+
     }
 
     private void setScoreLabel(){
@@ -98,17 +114,12 @@ public class GameForm extends JFrame {
         this.setLayout(null);//turn off layout manager
         gameArea = new GameArea(gameAreaPlaceHolder, 10);
         this.add(gameArea);
-        this.startGame();
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setVisible(true);
+        this.setVisible(false);
     }
 
 
-    public static void main(String[] args) {
-        java.awt.EventQueue.invokeLater(() -> {
-            GameForm gameForm = new GameForm();
-        });
-    }
+
 
 
 }

@@ -22,7 +22,7 @@ public class IShapeBlock extends TetrisBlock {
     @Override
     public void unrotate(){
         super.unrotate();
-        if(this.getWidth() == 1){
+        if(this.getWidth() == 4){
             this.setX(getX()-1);
             this.setY(getY() + 1);
         }else{

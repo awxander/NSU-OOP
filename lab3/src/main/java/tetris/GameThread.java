@@ -3,7 +3,7 @@ package tetris;
 public class GameThread extends Thread {
 
     private final GameArea gameArea;
-    private int score;
+    private int score = 0;
     private final GameForm gameForm;
     private int scorePerLevel = 20;
     private int level = 1;
@@ -15,6 +15,8 @@ public class GameThread extends Thread {
     public GameThread(GameArea gameArea, GameForm gameForm) {
         this.gameArea = gameArea;
         this.gameForm = gameForm;
+        gameForm.updateScore(0);
+        gameForm.updateLevel(1);
     }
 
     @Override
@@ -29,12 +31,13 @@ public class GameThread extends Thread {
                     Thread.sleep(pauseTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                    return;
                 }
 
             }
             if (gameArea.isBlockOutOfBounds()) {
-                System.out.println("game over");
-                break;//end of the game
+                Main.endGame(score);
+                break;
             }
             gameArea.moveBlockToBackGround();
             score += gameArea.clearLines();

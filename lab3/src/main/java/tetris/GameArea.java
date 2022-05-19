@@ -19,7 +19,7 @@ public class GameArea extends JPanel {
     private final int gridColumns;
     private final int gridCellSize;
     private TetrisBlock block;
-    private final Color[][] background;
+    private Color[][] background;
     private TetrisBlock[] blockTypes;
 
 
@@ -33,6 +33,10 @@ public class GameArea extends JPanel {
         gridColumns = columns;
         gridCellSize = this.getBounds().width / gridColumns;
         gridRows = this.getBounds().height / gridCellSize;
+
+    }
+
+    public void initBackGroundArray() {
         background = new Color[gridRows][gridColumns];
 
     }
@@ -213,16 +217,30 @@ public class GameArea extends JPanel {
     }
 
 
-    private boolean checkLayering(){
+    private boolean checkLayering() {
         int[][] shape = block.getShape();
         int width = block.getWidth();
         int height = block.getHeight();
-        if(block.getLeftEdge() < 0 || block.getRightEdge() > gridColumns || block.getBottomEdge() > gridRows){
+        if (block.getLeftEdge() < 0 || block.getRightEdge() > gridColumns || block.getBottomEdge() > gridRows) {
             return false;
         }
 
         for (int row = 0; row < height; row++) {
             for (int column = width - 1; column >= 0; column--) {
+                if (shape[row][column] != 0) {
+                    int x = column + block.getX();
+                    int y = row + block.getY();
+
+                    if (y < 0) break;//while block is spawned in the top
+
+                    if (background[y][x] != null) return false;
+
+                    break;
+                }
+            }
+        }
+        for (int row = 0; row < height; row++) {
+            for (int column = 0; column < width; column++) {
                 if (shape[row][column] != 0) {
                     int x = column + block.getX();
                     int y = row + block.getY();
@@ -244,7 +262,7 @@ public class GameArea extends JPanel {
 
         block.rotate();
 
-        if(!checkLayering()){//если есть наслоение
+        if (!checkLayering()) {//если есть наслоение
             block.unrotate();
         }
         repaint();
@@ -294,7 +312,9 @@ public class GameArea extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        drawBlock(g);
+        if (block != null) {
+            drawBlock(g);
+        }
         drawBackground(g);
     }
 }
