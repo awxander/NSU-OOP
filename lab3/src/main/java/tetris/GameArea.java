@@ -21,6 +21,7 @@ public class GameArea extends JPanel {
     private TetrisBlock block;
     private Color[][] background;
     private TetrisBlock[] blockTypes;
+    private final int FILLED_WITH_PAINT = 1;
 
 
     public GameArea(JPanel placeholder, int columns) {
@@ -92,7 +93,7 @@ public class GameArea extends JPanel {
 
         for (int row = 0; row < block.getHeight(); row++) {
             for (int column = 0; column < block.getWidth(); column++) {
-                if (shape[row][column] == 1) {
+                if (shape[row][column] == FILLED_WITH_PAINT) {
                     background[yPos + row][xPos + column] = color;
                 }
             }
@@ -111,7 +112,7 @@ public class GameArea extends JPanel {
 
         for (int column = 0; column < width; column++) {
             for (int row = height - 1; row >= 0; row--) {
-                if (shape[row][column] != 0) {
+                if (shape[row][column] == FILLED_WITH_PAINT) {
                     int x = column + block.getX();
                     int y = row + block.getY() + 1;
 
@@ -166,7 +167,7 @@ public class GameArea extends JPanel {
 
         for (int row = 0; row < height; row++) {
             for (int column = width - 1; column >= 0; column--) {
-                if (shape[row][column] != 0) {
+                if (shape[row][column] == FILLED_WITH_PAINT) {
                     int x = column + block.getX() + 1;
                     int y = row + block.getY();
 
@@ -227,7 +228,7 @@ public class GameArea extends JPanel {
 
         for (int row = 0; row < height; row++) {
             for (int column = width - 1; column >= 0; column--) {
-                if (shape[row][column] != 0) {
+                if (shape[row][column] == FILLED_WITH_PAINT) {
                     int x = column + block.getX();
                     int y = row + block.getY();
 

@@ -1,5 +1,6 @@
 package tetris;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -28,12 +29,13 @@ public class LeaderboardForm extends JFrame {
     private final String LEADERBOARD_FILE_NAME = "leaderboard";
     private TableRowSorter<TableModel> sorter;
     private final int SCORE_COLUMN_INDEX = 1;
+    private final int LEADERBOARD_WIDTH = 500;
+    private final int LEADERBOARD_HEIGHT = 500;
 
     public void addPlayer(String playerName, int score) {
         defaultTableModel.addRow(new Object[]{playerName, score});
         saveLeaderboardData();
     }
-
 
     private void initTableSorter() {
         sorter = new TableRowSorter<>(defaultTableModel);
@@ -93,7 +95,7 @@ public class LeaderboardForm extends JFrame {
     public LeaderboardForm(StartupForm startupForm) {
 
 
-        this.setSize(500, 500);
+        this.setSize(LEADERBOARD_WIDTH, LEADERBOARD_HEIGHT);
         //this.setLayout(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);//set frame in the center of the screen

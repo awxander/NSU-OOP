@@ -10,13 +10,15 @@ public class GameThread extends Thread {
 
     private int pauseTime  = 1000;
     private int speedPerLevel  = 150;
+    private final int INITIAL_SCORE = 0;
+    private final int INITIAL_LVL = 1;
 
 
     public GameThread(GameArea gameArea, GameForm gameForm) {
         this.gameArea = gameArea;
         this.gameForm = gameForm;
-        gameForm.updateScore(0);
-        gameForm.updateLevel(1);
+        gameForm.updateScore(INITIAL_SCORE);
+        gameForm.updateLevel(INITIAL_LVL);
     }
 
     @Override

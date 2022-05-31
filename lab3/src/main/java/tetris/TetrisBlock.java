@@ -11,6 +11,9 @@ public class TetrisBlock {
     private int[][][] shapes;
     private int currentRotation;
     private Color[] availableColors = {Color.red, Color.blue,Color.green, Color.pink, Color.cyan};
+    private final int POSITIONS_AMOUNT = 4;
+    private final int FIRST_POSITION = 0;
+    private final int LAST_POSITION = 3;
 
     public void setX(int x) {
         this.x = x;
@@ -30,8 +33,8 @@ public class TetrisBlock {
     }
 
     private void initShapes() {
-        shapes = new int[4][][];
-        for (int i = 0; i < 4; i++) {
+        shapes = new int[POSITIONS_AMOUNT][][];
+        for (int i = 0; i < POSITIONS_AMOUNT; i++) {
             int rows  = shape[0].length;
             int columns = shape.length;
             shapes[i] = new int[rows][columns];
@@ -87,16 +90,16 @@ public class TetrisBlock {
 
     public void rotate() {
         currentRotation++;
-        if (currentRotation > 3) {
-            currentRotation = 0;
+        if (currentRotation > LAST_POSITION) {
+            currentRotation = FIRST_POSITION;
         }
         shape = shapes[currentRotation];
     }
 
     public void unrotate(){
         currentRotation--;
-        if(currentRotation < 0){
-            currentRotation = 3;
+        if(currentRotation < FIRST_POSITION){
+            currentRotation = LAST_POSITION;
         }
         shape = shapes[currentRotation];
     }

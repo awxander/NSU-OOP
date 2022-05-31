@@ -12,6 +12,13 @@ public class GameForm extends JFrame {
     private JLabel levelLabel;
     private final GameArea gameArea;
     private GameThread gameThread;
+    private final int GAMEFORM_WIDTH = 700;
+    private final int GAMEAREA_WIDTH = 350;
+    private final int LABEL_WIDTH = 200;
+    private final int GAMEFORM_HEIGHT = 700;
+    private final int GAMEAREA_HEIGHT = 500;
+    private final int LABEL_HEIGHT = 50;
+    private final int GAMEAREA_COLUMNS_AMOUNT = 10;
 
 
     private void initControls() {
@@ -69,7 +76,7 @@ public class GameForm extends JFrame {
     }
 
     private void setScoreLabel(){
-        scoreLabel.setBounds(425,100,200,50);
+        scoreLabel.setBounds(425,100,LABEL_WIDTH,LABEL_HEIGHT);
         scoreLabel.setText("score: 0");
         scoreLabel.setFont(new Font("Verdana",Font.BOLD,20));
         scoreLabel.setBorder(BorderFactory.createEtchedBorder());
@@ -78,7 +85,7 @@ public class GameForm extends JFrame {
     }
 
     private void setLevelLabel(){
-        levelLabel.setBounds(425,200,200,50);
+        levelLabel.setBounds(425,200,LABEL_WIDTH,LABEL_HEIGHT);
         levelLabel.setText("level: 1");
         levelLabel.setFont(new Font("Verdana",Font.BOLD,20));
         levelLabel.setBorder(BorderFactory.createEtchedBorder());
@@ -97,8 +104,8 @@ public class GameForm extends JFrame {
     public GameForm() {
         initControls();
         gameAreaPlaceHolder = new JPanel();
-        gameAreaPlaceHolder.setBounds(50,50,350,500);
-        this.setSize(700, 700);
+        gameAreaPlaceHolder.setBounds(50,50,GAMEAREA_WIDTH,GAMEAREA_HEIGHT);
+        this.setSize(GAMEFORM_WIDTH, GAMEFORM_HEIGHT);
         this.setLocationRelativeTo(null);//set frame in the center of the screen
         this.setResizable(false);
 
@@ -112,7 +119,7 @@ public class GameForm extends JFrame {
 
         System.out.println(this.getBackground());
         this.setLayout(null);//turn off layout manager
-        gameArea = new GameArea(gameAreaPlaceHolder, 10);
+        gameArea = new GameArea(gameAreaPlaceHolder, GAMEAREA_COLUMNS_AMOUNT);
         this.add(gameArea);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(false);
