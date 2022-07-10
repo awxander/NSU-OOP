@@ -1,6 +1,10 @@
-*.xml
 *.txt
-idea/
+.idea/
+out/
+*.csv
 *.class
 *.iml
 *.xml
+.gitignore
+target/
+
