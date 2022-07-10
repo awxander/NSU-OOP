@@ -13,6 +13,7 @@ public class BodyStorage implements Storage {
     private final int size;
     List<CarBody> carBodyList;
     private boolean isFull = false;
+    private static int currentDetailsAmount = 0;
 
     public BodyStorage() {
         carBodyList = new ArrayList<>();
@@ -32,8 +33,7 @@ public class BodyStorage implements Storage {
 
     public synchronized void addBody(CarBody carBody) {
         carBodyList.add(carBody);
-/*        System.out.println("added new body with ID:" + carBody.getID()
-                + ",current amount is: " + carBodyList.size());*/
+        currentDetailsAmount++;
         if (carBodyList.size() == size) {
             isFull = true;
             System.out.println("body storage is full, waiting...");//почему добавляются новые body
@@ -46,6 +46,9 @@ public class BodyStorage implements Storage {
 
     }
 
+    public static Integer getCurrentDetailsAmount(){
+        return currentDetailsAmount;
+    }
 
     public boolean isEmpty() {
         return carBodyList.isEmpty();
@@ -53,6 +56,7 @@ public class BodyStorage implements Storage {
 
     public synchronized CarBody takeCarBody() {
         notify();
+        currentDetailsAmount--;
         return carBodyList.remove(0);
     }
 

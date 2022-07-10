@@ -14,26 +14,26 @@ public class Dealer extends Thread {
 
     @Override
     public void run() {
-        synchronized (assembledCarsStorage) {
 
-            while (true) {
-                    while (assembledCarsStorage.isEmpty()) {
-                        try {
-                            System.out.println("dealer waiting for car...");
-                            assembledCarsStorage.wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+        while (true) {
+            synchronized (assembledCarsStorage) {
+                while (assembledCarsStorage.isEmpty()) {
+                    try {
+                        System.out.println("dealer waiting for car...");
+                        assembledCarsStorage.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                    System.out.println("dealer keeps going");
-                    car = assembledCarsStorage.takeCar();
-                    System.out.println("car with ID: " + car.getID() + " was sold");
-                    sellCar();
-                try {
-                    Thread.sleep(requestSpeed);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
+                System.out.println("dealer keeps going");
+                car = assembledCarsStorage.takeCar();
+                System.out.println("car with ID: " + car.getID() + " was sold");
+                sellCar();
+            }
+            try {
+                Thread.sleep(requestSpeed);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }

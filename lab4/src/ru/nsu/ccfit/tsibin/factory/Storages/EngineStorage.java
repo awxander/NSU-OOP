@@ -13,6 +13,7 @@ public class EngineStorage implements Storage {
     private final int size;
     List<CarEngine> carEngineList;
     private boolean isFull = false;
+    private static int currentDetailsAmount = 0;
 
     public EngineStorage() {
         carEngineList = new ArrayList<>();
@@ -33,8 +34,7 @@ public class EngineStorage implements Storage {
     public synchronized void addEngine(CarEngine carEngine) {
         if (carEngineList.size() < size) {
             carEngineList.add(carEngine);
-/*            System.out.println("added new engine with ID:" + carEngine.getID()
-                    + ",current amount is: " + carEngineList.size());*/
+            currentDetailsAmount++;
         }
         else{
             isFull = true;
@@ -47,8 +47,13 @@ public class EngineStorage implements Storage {
         return carEngineList.isEmpty();
     }
 
+    public static Integer getCurrentDetailsAmount(){
+        return currentDetailsAmount;
+    }
+
     public synchronized CarEngine takeCarEngine(){
         notify();
-        return carEngineList.remove(0);//заменить get на take у suppliers и складов
+        currentDetailsAmount--;
+        return carEngineList.remove(0);
     }
 }

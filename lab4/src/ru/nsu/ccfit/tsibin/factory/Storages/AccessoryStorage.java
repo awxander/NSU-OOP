@@ -13,6 +13,7 @@ public class AccessoryStorage implements Storage {
     private final int size;
     List<CarAccessory> carAccessoryList;
     private boolean isFull = false;
+    private static int currentDetailsAmount = 0;
 
     public AccessoryStorage() {
         carAccessoryList = new ArrayList<>();
@@ -33,8 +34,7 @@ public class AccessoryStorage implements Storage {
     public synchronized void addAccessory(CarAccessory carAccessory) {
         if (carAccessoryList.size() < size) {
             carAccessoryList.add(carAccessory);
-/*            System.out.println("added new accessory with ID:" + carAccessory.getID()
-                    + ",current amount is: " + carAccessoryList.size());*/
+            currentDetailsAmount++;
         }
         else{
             isFull = true;
@@ -44,7 +44,7 @@ public class AccessoryStorage implements Storage {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println("keep going");
+            System.out.println("accessory storage keep going");
         }
     }
 
@@ -53,8 +53,13 @@ public class AccessoryStorage implements Storage {
         return carAccessoryList.isEmpty();
     }
 
+    public static Integer getCurrentDetailsAmount(){
+        return currentDetailsAmount;
+    }
+
     public synchronized CarAccessory takeCarAccessory(){
         notify();
+        currentDetailsAmount--;
         return carAccessoryList.remove(0);
     }
 }

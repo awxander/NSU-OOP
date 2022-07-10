@@ -4,6 +4,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.LinkedBlockingQueue;
+import ru.nsu.ccfit.tsibin.factory.Car;
+import ru.nsu.ccfit.tsibin.factory.CarCreateTask;
+import ru.nsu.ccfit.tsibin.factory.Details.CarAccessory;
+import ru.nsu.ccfit.tsibin.factory.Details.CarBody;
+import ru.nsu.ccfit.tsibin.factory.Details.CarEngine;
 import ru.nsu.ccfit.tsibin.factory.Storages.AccessoryStorage;
 import ru.nsu.ccfit.tsibin.factory.Storages.AssembledCarsStorage;
 import ru.nsu.ccfit.tsibin.factory.Storages.BodyStorage;
@@ -14,10 +19,10 @@ public class WorkerThreadPool {
     private final String PATH_TO_PROPERTIES = "resources\\config.properties";
     private final Worker[] workers;
     private final AccessoryStorage accessoryStorage;
-    private final AssembledCarsStorage assembledCarsStorage;
     private final BodyStorage bodyStorage;
     private final EngineStorage engineStorage;
-    private LinkedBlockingQueue<Runnable> queue;
+    private final AssembledCarsStorage assembledCarsStorage;
+    private LinkedBlockingQueue<CarCreateTask> queue;
 
     public WorkerThreadPool(AccessoryStorage accessoryStorage,
                             BodyStorage bodyStorage,
@@ -50,7 +55,7 @@ public class WorkerThreadPool {
     }
 
 
-    public void execute(Runnable task) {
+    public void execute(CarCreateTask task) {
         synchronized (queue) {
 
             queue.add(task);
@@ -62,7 +67,11 @@ public class WorkerThreadPool {
 
         @Override
         public void run() {
-            Runnable task;
+            CarCreateTask task;
+            CarAccessory accessory;
+            CarBody body;
+            CarEngine engine;
+            Car car;
             while (true) {
                 synchronized (queue) {
                     while (queue.isEmpty()) {//допиливаем worker
@@ -82,6 +91,7 @@ public class WorkerThreadPool {
                             e.printStackTrace();
                         }
                     }
+                    accessory = accessoryStorage.takeCarAccessory();
                 }
                 synchronized (bodyStorage) {
                     while (bodyStorage.isEmpty()) {
@@ -91,6 +101,7 @@ public class WorkerThreadPool {
                             e.printStackTrace();
                         }
                     }
+                    body = bodyStorage.takeCarBody();
                 }
                 synchronized (engineStorage) {
                     while (engineStorage.isEmpty()) {
@@ -100,8 +111,12 @@ public class WorkerThreadPool {
                             e.printStackTrace();
                         }
                     }
+                    engine = engineStorage.takeCarEngine();
                 }
+                task.setDetails(accessory,body,engine);
                 task.run();
+                car = task.getCar();
+                assembledCarsStorage.addCar(car);
             }
         }
 

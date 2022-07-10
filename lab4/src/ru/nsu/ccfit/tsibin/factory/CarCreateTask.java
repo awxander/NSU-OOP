@@ -1,29 +1,32 @@
 package ru.nsu.ccfit.tsibin.factory;
 
+import ru.nsu.ccfit.tsibin.factory.Details.CarAccessory;
+import ru.nsu.ccfit.tsibin.factory.Details.CarBody;
+import ru.nsu.ccfit.tsibin.factory.Details.CarEngine;
 import ru.nsu.ccfit.tsibin.factory.Storages.AccessoryStorage;
 import ru.nsu.ccfit.tsibin.factory.Storages.AssembledCarsStorage;
 import ru.nsu.ccfit.tsibin.factory.Storages.BodyStorage;
 import ru.nsu.ccfit.tsibin.factory.Storages.EngineStorage;
 
 public class CarCreateTask implements Runnable{
-    private final AssembledCarsStorage assembledCarsStorage;
-    private final AccessoryStorage accessoryStorage;
-    private final EngineStorage engineStorage;
-    private final BodyStorage bodyStorage;
+    private  CarAccessory accessory = null;
+    private  CarBody body = null;
+    private  CarEngine engine = null;
+    private Car car;
 
-    public CarCreateTask(AccessoryStorage accessoryStorage, EngineStorage engineStorage,
-                         BodyStorage bodyStorage, AssembledCarsStorage assembledCarsStorage) {
-        this.accessoryStorage = accessoryStorage;
-        this.engineStorage = engineStorage;
-        this.bodyStorage = bodyStorage;
-        this.assembledCarsStorage = assembledCarsStorage;
+    public void setDetails(CarAccessory accessory, CarBody body, CarEngine engine){
+        this.accessory = accessory;
+        this.body = body;
+        this.engine =engine;
+
+    }
+
+    public Car getCar() {
+        return car;
     }
 
     @Override
     public void run(){
-        assembledCarsStorage.addCar
-                (new Car(engineStorage.takeCarEngine(),
-                        bodyStorage.takeCarBody(),
-                        accessoryStorage.takeCarAccessory()));
+        car = new Car(engine,body,accessory);
     }
 }
