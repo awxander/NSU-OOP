@@ -32,9 +32,7 @@ public class EngineSupplier extends Thread implements Supplier {
                     sendEngine();
                 } else {
                     try {
-                        System.out.println("engine supplier number " + this.getId() + " waiting");
                         engineStorage.wait();
-                        System.out.println("engine supplier number " + this.getId() + " working again");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

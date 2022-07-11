@@ -33,9 +33,7 @@ public class BodySupplier extends Thread implements Supplier {
                     sendBody();
                 } else {
                     try {
-                        System.out.println("body supplier number " + this.getId() + " waiting");
                         bodyStorage.wait();
-                        System.out.println("body supplier number " + this.getId() + " working again");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

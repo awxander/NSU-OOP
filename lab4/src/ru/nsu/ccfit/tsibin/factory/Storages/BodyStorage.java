@@ -34,15 +34,9 @@ public class BodyStorage implements Storage {
     public synchronized void addBody(CarBody carBody) {
         carBodyList.add(carBody);
         currentDetailsAmount++;
-        if (carBodyList.size() == size) {
-            isFull = true;
-            System.out.println("body storage is full, waiting...");//почему добавляются новые body
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        notify();
+        if (carBodyList.size() == size) isFull = true;
+
 
     }
 

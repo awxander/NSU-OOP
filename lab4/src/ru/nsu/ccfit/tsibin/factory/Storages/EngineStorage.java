@@ -35,10 +35,10 @@ public class EngineStorage implements Storage {
         if (carEngineList.size() < size) {
             carEngineList.add(carEngine);
             currentDetailsAmount++;
+            notify();
         }
         else{
             isFull = true;
-            System.out.println("engine storage is full");
         }
     }
 

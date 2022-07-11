@@ -14,6 +14,8 @@ public class AssembledCarsStorage implements Storage {
     private final int size;
     List<Car> carList;
     private boolean isFull = false;
+    private static int currentCarsAmount = 0;
+    private static int producedCarsAmount = 0;
 
 
     public AssembledCarsStorage() {
@@ -33,18 +35,18 @@ public class AssembledCarsStorage implements Storage {
 
     public synchronized void addCar(Car car) {
         carList.add(car);
+        producedCarsAmount++;
+        currentCarsAmount++;
         System.out.println("added new car with ID:" + car.getID() + "<body ID: " + car.getBodyID()
                 + "> <engine ID: " + car.getEngineID() + "> <accessory ID: " + car.getAccessoryID()
-                + "> ,current amount is: " + carList.size());
+                + ">");
         if (carList.size() == size) {
             isFull = true;
-            System.out.println("assembled car storage storage is full, waiting for request...");
             try {
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println("assembled car storage keep going");
             isFull = false;
         }
         notify();
@@ -54,8 +56,21 @@ public class AssembledCarsStorage implements Storage {
         return carList.isEmpty();
     }
 
+    public static int getCurrentCarsAmount() {
+        return currentCarsAmount;
+    }
+
+    public static int getProducedCarsAmount() {
+        return producedCarsAmount;
+    }
+
+    public int getFreeSpace(){
+        return size - currentCarsAmount;//че за ебань творится с тасками
+    }
+
     public synchronized Car takeCar() {
         notify();
+        currentCarsAmount--;
         return carList.remove(0);
     }
 

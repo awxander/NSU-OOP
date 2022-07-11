@@ -50,18 +50,21 @@ public class WorkerThreadPool {
             workers[i] = new Worker();
             workers[i].start();
         }
-
-
     }
+
 
 
     public void execute(CarCreateTask task) {
         synchronized (queue) {
-
             queue.add(task);
             queue.notify();
         }
     }
+
+    public int getUnfinishedTasksAmount(){
+        return queue.size();
+    }
+
 
     public class Worker extends Thread {
 
@@ -119,8 +122,6 @@ public class WorkerThreadPool {
                 assembledCarsStorage.addCar(car);
             }
         }
-
-
     }
 
 

@@ -6,6 +6,7 @@ import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.LogManager;
 import javax.swing.*;
 import ru.nsu.ccfit.tsibin.factory.Controller;
 import ru.nsu.ccfit.tsibin.factory.Dealer;
@@ -26,9 +27,9 @@ public class Main extends JFrame {
     private final int FRAME_HEIGHT = 800;
     private final int SLIDER_WIDTH = 100;
     private final int SLIDER_HEIGHT = 50;
-    private final int LABEL_WIDTH = 200;
+    private final int LABEL_WIDTH = 250;
     private final int LABEL_HEIGHT = 30;
-    private final int DEFAULT_DELAY = 200;
+    private final int DEFAULT_DELAY = 500;
     private static final String PATH_TO_PROPERTIES = "resources\\config.properties";
     private final static Properties properties;
 
@@ -50,26 +51,8 @@ public class Main extends JFrame {
         addLabels();
     }
 
-    private void addSliders() {
-        JSlider accessorySpeedSlider = new JSlider();
-        accessorySpeedSlider.setBounds(0, 30, SLIDER_WIDTH, SLIDER_HEIGHT);
+    private void addBodySlider(){
 
-        accessorySpeedSlider.setMaximum(MAX_SPEED);
-        accessorySpeedSlider.setMinimum(MIN_SPEED);
-        accessorySpeedSlider.setValue(MIN_SPEED);
-
-        accessorySpeedSlider.setName("supplier speed");
-        accessorySpeedSlider.addChangeListener(e -> {
-            int speed = accessorySpeedSlider.getValue();
-            AccessorySupplier.setProductionSpeed(speed);
-            System.out.println(speed);
-        });
-        this.add(accessorySpeedSlider);
-
-
-        JLabel bodySpeedSliderLabel = new JLabel("body supplier speed");
-        bodySpeedSliderLabel.setBounds(0, 80, LABEL_WIDTH, LABEL_HEIGHT);
-        this.add(bodySpeedSliderLabel);
 
         JSlider bodySpeedSlider = new JSlider();
         bodySpeedSlider.setBounds(0, 110, SLIDER_WIDTH, SLIDER_HEIGHT);
@@ -82,11 +65,11 @@ public class Main extends JFrame {
         bodySpeedSlider.addChangeListener(e -> {
             int speed = bodySpeedSlider.getValue();
             BodySupplier.setProductionSpeed(speed);
-            System.out.println(speed);
         });
         this.add(bodySpeedSlider);
+    }
 
-
+    private void addEngineSlider(){
         JSlider engineSpeedSlider = new JSlider();
         engineSpeedSlider.setBounds(0, 190, SLIDER_WIDTH, SLIDER_HEIGHT);
 
@@ -94,16 +77,105 @@ public class Main extends JFrame {
         engineSpeedSlider.setMinimum(MIN_SPEED);
         engineSpeedSlider.setValue(MIN_SPEED);
 
-        engineSpeedSlider.setName("supplier speed");
+        engineSpeedSlider.setName("engine supplier speed");
         engineSpeedSlider.addChangeListener(e -> {
             int speed = engineSpeedSlider.getValue();
             EngineSupplier.setProductionSpeed(speed);
-            System.out.println(speed);
         });
         this.add(engineSpeedSlider);
     }
 
-    private void addLabels() {
+    private void addAccessorySlider(){
+        JSlider accessorySpeedSlider = new JSlider();
+        accessorySpeedSlider.setBounds(0, 30, SLIDER_WIDTH, SLIDER_HEIGHT);
+
+        accessorySpeedSlider.setMaximum(MAX_SPEED);
+        accessorySpeedSlider.setMinimum(MIN_SPEED);
+        accessorySpeedSlider.setValue(MIN_SPEED);
+
+        accessorySpeedSlider.setName("supplier speed");
+        accessorySpeedSlider.addChangeListener(e -> {
+            int speed = accessorySpeedSlider.getValue();
+            AccessorySupplier.setProductionSpeed(speed);
+        });
+        this.add(accessorySpeedSlider);
+    }
+
+    private void addDealerSpeedSlider(){
+        JSlider dealerRequestSpeedSlider = new JSlider();
+        dealerRequestSpeedSlider.setBounds(0, 400, SLIDER_WIDTH, SLIDER_HEIGHT);
+
+        dealerRequestSpeedSlider.setMaximum(MAX_SPEED);
+        dealerRequestSpeedSlider.setMinimum(MIN_SPEED);
+        dealerRequestSpeedSlider.setValue(MIN_SPEED);
+
+        dealerRequestSpeedSlider.setName("dealer request speed slider");
+        dealerRequestSpeedSlider.addChangeListener(e -> {
+            int speed = dealerRequestSpeedSlider.getValue();
+            Dealer.setRequestSpeed(speed);
+        });
+        this.add(dealerRequestSpeedSlider);
+    }
+
+    private void addSliders() {
+
+        addBodySlider();
+        addEngineSlider();
+        addAccessorySlider();
+        addDealerSpeedSlider();
+
+    }
+
+    private void addEngineLabels(){
+        JLabel engineAmountLabel = new JLabel("produced engines amount: 0");
+        engineAmountLabel.setBounds(LABEL_WIDTH, LABEL_HEIGHT * 2, LABEL_WIDTH, LABEL_HEIGHT);
+        ScheduledExecutorService engineExecutor = Executors.newSingleThreadScheduledExecutor();
+        engineExecutor.scheduleWithFixedDelay(() -> {
+            engineAmountLabel.setText("produced engines amount: " + EngineSupplier.getProducedDetailsAmount());
+        }, 200, 200, TimeUnit.MILLISECONDS);
+        this.add(engineAmountLabel);
+
+        JLabel engineSpeedSliderLabel = new JLabel("engine supplier speed");
+        engineSpeedSliderLabel.setBounds(0, 160, LABEL_WIDTH, LABEL_HEIGHT);
+        this.add(engineSpeedSliderLabel);
+
+        JLabel currentEngineAmount = new JLabel("<html>current bodies<br>" +
+                "amount in storage: 0</html>");
+        currentEngineAmount.setBounds(LABEL_WIDTH, 280, LABEL_WIDTH, LABEL_HEIGHT);
+        ScheduledExecutorService engineStorageExecutor = Executors.newSingleThreadScheduledExecutor();
+        engineStorageExecutor.scheduleWithFixedDelay(() -> {
+            currentEngineAmount.setText("<html>current engines<br>amount in storage: "
+                    + EngineStorage.getCurrentDetailsAmount() + "</html>");
+        }, DEFAULT_DELAY, DEFAULT_DELAY, TimeUnit.MILLISECONDS);
+        this.add(currentEngineAmount);
+    }
+
+
+    private void addBodyLabels(){
+        JLabel bodySpeedSliderLabel = new JLabel("body supplier speed");
+        bodySpeedSliderLabel.setBounds(0, 80, LABEL_WIDTH, LABEL_HEIGHT);
+        this.add(bodySpeedSliderLabel);
+
+        JLabel bodyAmountLabel = new JLabel("produced bodies amount: 0");
+        bodyAmountLabel.setBounds(LABEL_WIDTH, LABEL_HEIGHT, LABEL_WIDTH, LABEL_HEIGHT);
+        ScheduledExecutorService bodyExecutor = Executors.newSingleThreadScheduledExecutor();
+        bodyExecutor.scheduleWithFixedDelay(() -> {
+            bodyAmountLabel.setText("produced bodies amount: " + BodySupplier.getProducedDetailsAmount());
+        }, DEFAULT_DELAY, DEFAULT_DELAY, TimeUnit.MILLISECONDS);
+        this.add(bodyAmountLabel);
+
+        JLabel currentBodyAmount = new JLabel("<html>current bodies<br>" +
+                "amount in storage: 0</html>");
+        currentBodyAmount.setBounds(LABEL_WIDTH, 220, LABEL_WIDTH, LABEL_HEIGHT);
+        ScheduledExecutorService bodyStorageExecutor = Executors.newSingleThreadScheduledExecutor();
+        bodyStorageExecutor.scheduleWithFixedDelay(() -> {
+            currentBodyAmount.setText("<html>current bodies<br>amount in storage: "
+                    + BodyStorage.getCurrentDetailsAmount() + "</html>");
+        }, DEFAULT_DELAY, DEFAULT_DELAY, TimeUnit.MILLISECONDS);
+        this.add(currentBodyAmount);
+    }
+
+    private void addAccessoryLabels(){
         JLabel accessoryAmountLabel = new JLabel("produced accessories amount: 0");
         accessoryAmountLabel.setBounds(LABEL_WIDTH, 0, LABEL_WIDTH, LABEL_HEIGHT);
         ScheduledExecutorService accessoryExecutor = Executors.newSingleThreadScheduledExecutor();
@@ -126,57 +198,48 @@ public class Main extends JFrame {
                     + AccessoryStorage.getCurrentDetailsAmount() + "</html>");
         }, DEFAULT_DELAY, DEFAULT_DELAY, TimeUnit.MILLISECONDS);
         this.add(currentAccessoryAmount);
+    }
 
+    private void addDealerLabels(){
+        JLabel dealerRequestSpeedLAbel = new JLabel("dealer request speed");
+        dealerRequestSpeedLAbel.setBounds(0, 330, LABEL_WIDTH, LABEL_HEIGHT);
+        this.add(dealerRequestSpeedLAbel);
+    }
 
-        
-        JLabel bodyAmountLabel = new JLabel("produced bodies amount: 0");
-        bodyAmountLabel.setBounds(LABEL_WIDTH, LABEL_HEIGHT, LABEL_WIDTH, LABEL_HEIGHT);
-        ScheduledExecutorService bodyExecutor = Executors.newSingleThreadScheduledExecutor();
-        bodyExecutor.scheduleWithFixedDelay(() -> {
-            bodyAmountLabel.setText("produced bodies amount: " + BodySupplier.getProducedDetailsAmount());
+    private void addAssembledCarsLabels(){
+        JLabel carsAmountLabel = new JLabel("produced cars amount: 0");
+        carsAmountLabel.setBounds(LABEL_WIDTH, 350, LABEL_WIDTH, LABEL_HEIGHT);
+        ScheduledExecutorService accessoryExecutor = Executors.newSingleThreadScheduledExecutor();
+        accessoryExecutor.scheduleWithFixedDelay(() -> {
+            carsAmountLabel.setText("produced cars amount: "
+                    + AssembledCarsStorage.getProducedCarsAmount());
         }, DEFAULT_DELAY, DEFAULT_DELAY, TimeUnit.MILLISECONDS);
-        this.add(bodyAmountLabel);
+        this.add(carsAmountLabel);
 
-        JLabel currentBodyAmount = new JLabel("<html>current bodies<br>" +
+        JLabel currentCarsAmount = new JLabel("<html>current cars<br>" +
                 "amount in storage: 0</html>");
-        currentBodyAmount.setBounds(LABEL_WIDTH, 220, LABEL_WIDTH, LABEL_HEIGHT);
-        ScheduledExecutorService bodyStorageExecutor = Executors.newSingleThreadScheduledExecutor();
-        accessoryStorageExecutor.scheduleWithFixedDelay(() -> {
-            currentBodyAmount.setText("<html>current bodies<br>amount in storage: "
-                    + BodyStorage.getCurrentDetailsAmount() + "</html>");
+        currentCarsAmount.setBounds(LABEL_WIDTH, 450, LABEL_WIDTH, LABEL_HEIGHT);
+        ScheduledExecutorService carStorageExecutor = Executors.newSingleThreadScheduledExecutor();
+        carStorageExecutor.scheduleWithFixedDelay(() -> {
+            currentCarsAmount.setText("<html>current cars<br>amount in storage: "
+                    + AssembledCarsStorage.getCurrentCarsAmount() + "</html>");
         }, DEFAULT_DELAY, DEFAULT_DELAY, TimeUnit.MILLISECONDS);
-        this.add(currentBodyAmount);
-
-        
-
-        JLabel engineAmountLabel = new JLabel("produced engines amount: 0");
-        engineAmountLabel.setBounds(LABEL_WIDTH, LABEL_HEIGHT * 2, LABEL_WIDTH, LABEL_HEIGHT);
-        ScheduledExecutorService engineExecutor = Executors.newSingleThreadScheduledExecutor();
-        engineExecutor.scheduleWithFixedDelay(() -> {
-            engineAmountLabel.setText("produced engines amount: " + EngineSupplier.getProducedDetailsAmount());
-        }, 200, 200, TimeUnit.MILLISECONDS);
-        this.add(engineAmountLabel);
-
-        JLabel engineSpeedSliderLabel = new JLabel("engine supplier speed");
-        engineSpeedSliderLabel.setBounds(0, 160, LABEL_WIDTH, LABEL_HEIGHT);
-        this.add(engineSpeedSliderLabel);
-
-        JLabel currentEngineAmount = new JLabel("<html>current bodies<br>" +
-                "amount in storage: 0</html>");
-        currentEngineAmount.setBounds(LABEL_WIDTH, 280, LABEL_WIDTH, LABEL_HEIGHT);
-        ScheduledExecutorService engineStorageExecutor = Executors.newSingleThreadScheduledExecutor();
-        accessoryStorageExecutor.scheduleWithFixedDelay(() -> {
-            currentEngineAmount.setText("<html>current engines<br>amount in storage: "
-                    + EngineStorage.getCurrentDetailsAmount() + "</html>");
-        }, DEFAULT_DELAY, DEFAULT_DELAY, TimeUnit.MILLISECONDS);
-        this.add(currentEngineAmount);
+        this.add(currentCarsAmount);
+    }
+    
+    private void addLabels() {
+        addEngineLabels();
+        addBodyLabels();
+        addAccessoryLabels();
+        addDealerLabels();
+        addAssembledCarsLabels();
     }
 
     private void setFrame() {
+        this.setLayout(null);
         this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setLayout(null);
         this.setVisible(true);
     }
     
@@ -210,7 +273,7 @@ public class Main extends JFrame {
     
     
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         new Main();
         
         AccessoryStorage accessoryStorage = new AccessoryStorage();

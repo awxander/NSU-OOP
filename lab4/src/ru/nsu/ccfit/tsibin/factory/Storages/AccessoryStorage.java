@@ -27,37 +27,30 @@ public class AccessoryStorage implements Storage {
         this.size = Integer.parseInt(properties.getProperty("accessory_storage_size"));
     }
 
-    public boolean isFull(){
-        return  isFull;
+    public boolean isFull() {
+        return isFull;
     }
 
     public synchronized void addAccessory(CarAccessory carAccessory) {
         if (carAccessoryList.size() < size) {
             carAccessoryList.add(carAccessory);
             currentDetailsAmount++;
-        }
-        else{
+            notify();
+        } else {
             isFull = true;
-            System.out.println("accessory storage is full, waiting...");
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println("accessory storage keep going");
         }
     }
 
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return carAccessoryList.isEmpty();
     }
 
-    public static Integer getCurrentDetailsAmount(){
+    public static Integer getCurrentDetailsAmount() {
         return currentDetailsAmount;
     }
 
-    public synchronized CarAccessory takeCarAccessory(){
+    public synchronized CarAccessory takeCarAccessory() {
         notify();
         currentDetailsAmount--;
         return carAccessoryList.remove(0);
